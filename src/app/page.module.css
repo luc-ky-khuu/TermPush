@@ -7,6 +7,12 @@
   min-height: 100vh;
 }
 
+.container-div {
+  width: 100%;
+  min-height: 20vh;
+  border: 1px solid black;
+}
+
 .description {
   display: inherit;
   justify-content: inherit;

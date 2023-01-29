@@ -1,24 +1,17 @@
-import { Inter } from '@next/font/google'
-import styles from '../app/page.module.css'
-import Router, { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import CreateDiv from './api/createDiv'
+import { NextPage } from 'next';
+import Head from 'next/head';
+import React from 'react';
+import ReactDom from 'react-dom';
 
-export default function Home() {
-	const [divs, addDiv] = useState<Array<JSX.Element>>([]);
-	let [num, incNum] = useState<number>(0)
-	const props: Object = {
-		id: num
-	};
- 	const appendDiv = () => {
-		addDiv([...divs, <CreateDiv { ...props }/>])
-		incNum(num+=1)
-	};
-
+const Home: NextPage = () => {
 	return (
-		<main id='main'>
-			<button type='submit' onClick={() => appendDiv()}>Add Div</button>
-			{divs}
-		</main>
-	);
+		<div>
+			<Head>
+				<title>Home Page</title>
+			</Head>
+			<h1>Test</h1>
+		</div>
+	)
 }
+
+export default Home

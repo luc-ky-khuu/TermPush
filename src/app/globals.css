@@ -101,7 +101,7 @@ body {
 
 .insert-icon {
     border: solid 1px black;
-    position: absolute;
+    position: relative;
     height: 20px;
     width: 20px;
     margin: -12px;

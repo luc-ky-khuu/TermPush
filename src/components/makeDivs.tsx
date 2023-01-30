@@ -2,13 +2,14 @@ import styles from '../app/page.module.css'
 import React, { useState } from 'react'
 
 export default function createDiv({ ...props }): JSX.Element {
-	const [classNames, addClass] = useState<Array<String>>([styles['container-div']])
+	const [classNames, addClass] = useState<Array<String>>([styles['container-div'], 'flex', 'section-insert', 'justify-center'])
 	const addColor = () => {
 		addClass([...classNames, styles['test-class']])
 	};
+
 	return (
 		<div id={props.props.id} className={classNames.join(' ')}>
-			<button onClick={addColor}>Add Color</button>
+			<button className='self-end flex rounded-full insert-icon bg-white' onClick={event => props.props.functions.insertDiv(event)}><i className="fa-solid fa-plus w-full"></i></button>
 		</div>
 	)
 }

@@ -1,7 +1,6 @@
 export interface IDivProps {
     id: Number
-    functions: Object,
-    len: Number
+    functions: Object
 }
 
 interface functionsObject {

@@ -96,6 +96,15 @@ body {
             rgb(var(--background-end-rgb))
         )
         rgb(var(--background-start-rgb));
+    height: 100vh;
+}
+
+.insert-icon {
+    border: solid 1px black;
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    margin: -12px;
 }
 
 a {

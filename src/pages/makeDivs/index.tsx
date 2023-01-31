@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import CreateDiv from '../../components/makeDivs'
 import { IDivProps } from '../../interface/index.interface'
-import '../../app/globals.css'
 
 export default function addDiv(): JSX.Element {
 	let [divs, addDiv] = useState<Array<Object>>([]);

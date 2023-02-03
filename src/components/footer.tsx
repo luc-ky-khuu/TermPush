@@ -1,6 +1,6 @@
 export default function Footer({props}: any) {
     return (
-        <div className="footer container">
+        <div className="footer container z-10">
             <ul className="flex">
                 <li className="mr-6">
                     <a className="text-blue-500 hover:text-blue-800" href="/">Home</a>

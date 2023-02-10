@@ -1,5 +1,5 @@
-import styles from '../styles/makeDivs.module.css'
-import React, { useState } from 'react'
+import styles from '../styles/makeDivs.module.css';
+import { useState } from 'react';
 
 export default function createDiv({ ...props }): JSX.Element {
 	const [classNames, addClass] = useState<Array<String>>([styles['container-div'], 'flex', 'section-insert', 'justify-center', 'w-full'])

@@ -15,7 +15,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<main className='container bg-white mx-auto h-full'>
 			<NavBar></NavBar>
 			<div>{children}</div>
-			<Footer></Footer>
 		</main>
 	</>
 	)

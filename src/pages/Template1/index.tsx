@@ -15,9 +15,6 @@ export default function Template1(): JSX.Element {
 
 	return (
 		<>
-			<div className='fixed bottom-0 '>
-				test
-			</div>
 			<div>
 				{T1NavBar(props)}
 			</div>

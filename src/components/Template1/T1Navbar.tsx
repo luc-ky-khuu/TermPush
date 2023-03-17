@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { INavProps } from '../../interface/T1Navbar.interface';
+import  EditMenu  from '../editMenu';
 
 export default function NavBar(navProps: INavProps) {
-    const [drawerStatus, changeDrawer] = useState<String>('hidden');
-    const [editMenuStatus, changeEditMenu] = useState<String>('hidden');
+    const [drawerStatus, changeDrawerStatus] = useState<String>('hidden');
+    const [editMenuStatus, changeEditMenuStatus] = useState<String>('-translate-x-full');
 
     const toggleDrawer = () => {
-        changeDrawer(drawerStatus === 'hidden' ? '' : 'hidden');
+        changeDrawerStatus(drawerStatus === 'hidden' ? '' : 'hidden');
     };
 
     const toggleEditMenu = () => {
-        changeEditMenu(editMenuStatus === 'hidden' ? '' : 'hidden');
+        changeEditMenuStatus(editMenuStatus === '-translate-x-full' ? 'translate-x-0' : '-translate-x-full');
     }
 
     const updateValues = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,20 +42,11 @@ export default function NavBar(navProps: INavProps) {
                         Contact
                     </a>
                 </div>
-                <div className='relative'>
-                    <button onClick={() => toggleEditMenu()}><i className="fa-solid fa-pen-to-square" style={{color:'white'}}></i></button>
-                    <div className={`right-0 z-10 absolute bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 ${editMenuStatus}`}>
-                        <form onSubmit={updateValues} className="p-2 text-sm text-gray-700 dark:text-gray-200">
-                            <div className='flex'>
-                                <label htmlFor="navbg">NavBar Background Color: </label>
-                                <input type="text" id="navbg" name="navbg" className="border-solid border-2 border-black"/>
-                            </div>
-                            <button type="submit">Submit</button>
-                        </form>
-                    </div>
-                </div>
+                <button onClick={() => toggleEditMenu()}>edit</button>
             </div>
-            
+            <nav className={`transform fixed top-0 left-0 z-[1035] h-screen w-60 overflow-hidden bg-gray-200 duration-300 ${editMenuStatus}`}>
+                {EditMenu()}
+            </nav>
         </nav>
     )
 }

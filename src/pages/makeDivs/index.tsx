@@ -1,52 +1,46 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, createElement } from 'react'
 import CreateDiv from '../../components/makeDivs'
 import { IDivProps } from '../../interface/index.interface'
 
 export default function addDiv(): JSX.Element {
-	let [divs, addDiv] = useState<Array<Object>>([]);
-	let [num, incNum] = useState<number>(0);
-	let [clickedEvent, setClickedEvent] = useState<React.MouseEvent<HTMLButtonElement>>(null)
-	const props: IDivProps = {
-		id: num,
-		functions: {}
-	}
+    let [pageElements, setPageElements] = useState<Array<Object>>([{ element: 'h1', children: [], classes: [], text: 'test'}]);
+    useEffect(() => {})
+    interface pageElementObject {
+        element: String,
+        children: Array<pageElementObject>,
+        classes: Array<String>,
+        text: String,
+    };
+   const addElement = (element: String, classes: Array<String>) => {
+        const newElement = 
+        {
+            element: element,
+            children: [],
+            classes: classes,
+            text: `${element}`,
+        }
 
-	useEffect(() => {
-		//Mount, render initial section
-		addDiv([
-			{ idx: num, jsx: <CreateDiv key={num} props={ props } />},
-		]);
-		incNum(num += 1);
-		props.functions = {insertDiv}
-	}, [])
+        setPageElements([...pageElements, newElement])
+        console.log(pageElements)
+   }
+   const renderPageElements = (pageElementObject: pageElementObject) => {
+        // if (pageElementObject.children.length > 0) {
+        //     for (let i = 0; i < pageElementObject.children.length; i++) {
+        //         renderPageElements(pageElementObject.children[i]);
+        //     }
+        // }
+        const { element, children, classes, text } = pageElementObject;
 
-	useEffect(() => {
-		//When insert button is clicked, insert div into position
-		if (clickedEvent === null) return;
-		const selectedItem: EventTarget = clickedEvent.nativeEvent.target!;
-		const closestSection: HTMLElement = (selectedItem as HTMLElement).closest('.section-insert')!;
-		const childNodes: NodeList = closestSection.parentNode!.childNodes;
-		const idx: number = Array.prototype.indexOf.call(childNodes, closestSection);
-		props.functions = {insertDiv}
-		appendDivToIdx(idx)
-		incNum(num += 1);
-	}, [clickedEvent])
-
-	const appendDivToIdx = (idx: number) => {
-		addDiv([
-			...divs.slice(0, idx + 1),
-			{ idx: num + 1, jsx: <CreateDiv key={num + 1} props={ props } />},
-			...divs.slice(idx + 1)
-		])
-	}
-
-	const insertDiv = (event: React.MouseEvent<HTMLButtonElement>) => {
-		setClickedEvent(event)
-	}
+        return createElement(element, { className: classes.join(',') }, text )
+   };
 	return (
 		<>
-			<div>
-				{divs.map((item: any) => { return item.jsx })}
+			<div id='mainContainer'>
+				{pageElements.map((item: pageElementObject) => renderPageElements(item))}
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => addElement('h1', [])}>Add h1</button>
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => addElement('div', [])}>Add div</button>
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => addElement('p', [])}>Add p</button>
+                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => addElement('button', ['bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded'])}>Add button</button>
 			</div>
 		</>
 	)

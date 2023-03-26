@@ -22,7 +22,7 @@ export default function NavBar({props}: any) {
                     <a href="/" className="block mt-4 lg:inline-block lg:mt-0 text-sky-500 hover:text-white mr-4">
                         Home
                     </a>
-                    <a href="/makeDivs" className="block mt-4 lg:inline-block lg:mt-0 text-sky-500 hover:text-white mr-4">
+                    <a href="/AddElementTestPage" className="block mt-4 lg:inline-block lg:mt-0 text-sky-500 hover:text-white mr-4">
                         Features
                     </a>
                     <a href="/" className="block mt-4 lg:inline-block lg:mt-0 text-sky-500 hover:text-white">

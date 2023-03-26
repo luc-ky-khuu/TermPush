@@ -1,5 +1,4 @@
 import { useEffect } from 'react'
-import Footer from './footer'
 import Head from './head'
 import NavBar from './navbar'
 

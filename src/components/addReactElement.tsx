@@ -1,4 +1,4 @@
-import { useState, createElement, useEffect } from 'react';
+import { useState, createElement, useEffect, useRef, useImperativeHandle } from 'react';
 import { pageElementObject } from '@/interface/AddElementTestPage.interface';
 
 /**
@@ -9,64 +9,62 @@ import { pageElementObject } from '@/interface/AddElementTestPage.interface';
  */
 
 export default function AddReactElement({ ...props }): JSX.Element {
-    const { element, selected, setSelected } = props
+    const { element, selected, onSelect } = props
+    const ref = useRef(element.id);
+
 	let [pageElement, setPageElement] = useState<pageElementObject>(element);
     let [idCounter, setIdCounter] = useState<Object>(
         {}
     )
     useEffect(() => {}, []);
 
-    const addElement = (type: string, classes: Array<string>) => {
-		classes.push('ml-3') // push nested elements to the right to help visualize nesting, can be removed.
-        if (idCounter[type] >= 0) {
-            idCounter[type] += 1;
-        } else {
-            idCounter[type] = 0;
+    useImperativeHandle(ref, () => ({
+        addElement: (type: string, classes: Array<string>) => {
+            classes.push('ml-3') // push nested elements to the right to help visualize nesting, can be removed.
+            if (idCounter[type] >= 0) {
+                idCounter[type] += 1;
+            } else {
+                idCounter[type] = 0;
+            }
+            const newChildElement = {
+                type: type,
+                children: [],
+                classes: classes,
+                text: `${type}`,
+                id: `${element.id}${type}${idCounter[type]}`
+            };
+    
+            // add desired element to the children array of the selected component, then update state.
+            pageElement.children.push(newChildElement);
+            setIdCounter({...idCounter});
+            setPageElement({...pageElement});
         }
-        const newChildElement = {
-            type: type,
-            children: [],
-            classes: classes,
-            text: `${type}`,
-            id: `${element.id}${type}${idCounter[type]}`
-        };
-
-        // add desired element to the children array of the selected component, then update state.
-		pageElement.children.push(newChildElement);
-        setIdCounter({...idCounter});
-        setPageElement({...pageElement});
-    };
+    }))
 
     const renderPageElements = (pageElementObject: pageElementObject) => {
         const { type, children, classes, text } = pageElementObject; //id here is the child id
         // these are just buttons to test out adding, will be removed later in final product.
-        const addButtons = (
-            <div className={selected === element.id ? '' : 'hidden'}>
-                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => addElement('h1', [])}>Add h1</button>
-                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => addElement('div', [])}>Add div</button>
-                <button className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' onClick={() => addElement('p', [])}>Add p</button>
-            </div>
-        );
         //added text as first item in array.
         const reactChildren: Array<any>= [text];
         //if there are any nested (children) elements, render recursively
         if (children.length > 0) {
             for (let i = 0; i < children.length; i++) {
-                reactChildren.push(<AddReactElement selected={selected} setSelected={setSelected} element={children[i]}/>);
+                reactChildren.push(<AddReactElement selected={selected} onSelect={onSelect} element={children[i]} key={children[i].id}/>);
             }
         };
-        //add buttons for ability to keep adding, will be removed later in final product.
-        reactChildren.push(addButtons);
-		
+        //add buttons for ability to keep adding, will be removed later in final product.		
         return createElement(
             type,
             { 
                 className: `${classes.join(',')} ${selected === element.id ? 'border-2 border-black' : ''}`,
                 id: element.id,
+                ref: ref,
+                suppressContentEditableWarning: true,
+                contentEditable: selected === element.id ? true : false,
                 onClick: (event) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    setSelected(event.target.id);
+                    onSelect(event.target.id, ref, event);
                 }
             },
              reactChildren);

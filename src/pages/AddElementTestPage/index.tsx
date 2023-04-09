@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import AddReactElement from '../../components/addReactElement'
 export default function addDiv(): JSX.Element {
+	let [selected, setSelected] = useState<HTMLElement>();
+	useEffect(() => {}, [selected])
 	return (
 		<>
 			<div id='mainContainer'key='testing1'>
-				<AddReactElement key='testing' element={{ element: 'div', children: [{ element: 'div', children: [], classes: [], text: 'test'}, { element: 'div', children: [], classes: [], text: 'test2'}], classes: [], text: 'test'}}/>
+				<AddReactElement key='testing' selected={selected} setSelected={setSelected} element={{ type: 'div', children: [], classes: [], text: 'test', id: 'div0'}}/>
 			</div>
 		</>
 	)

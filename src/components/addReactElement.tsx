@@ -13,14 +13,21 @@ export default function AddReactElement({ ...props }): JSX.Element {
     const ref = useRef(element.id);
 
 	let [pageElement, setPageElement] = useState<pageElementObject>(element);
-    let [idCounter, setIdCounter] = useState<Object>(
-        {}
-    )
+    let [idCounter, setIdCounter] = useState<Object>({});
     useEffect(() => {}, []);
 
     useImperativeHandle(ref, () => ({
         addElement: (type: string, classes: Array<string>) => {
-            classes.push('ml-3') // push nested elements to the right to help visualize nesting, can be removed.
+            // switch (type) {
+            // }
+            /**Cases to add
+             * Anchor (a)
+             * Lists (li/ul/ol)
+             * Images
+             * Forms
+             * Inputs
+             */
+            classes.push('ml-3 w-full mt-3 mb-3 min-h-[50px]') // push nested elements to the right to help visualize nesting, can be removed.
             if (idCounter[type] >= 0) {
                 idCounter[type] += 1;
             } else {
@@ -64,7 +71,7 @@ export default function AddReactElement({ ...props }): JSX.Element {
                 onClick: (event) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    onSelect(event.target.id, ref, event);
+                    onSelect(event.target.id, ref);
                 }
             },
              reactChildren);

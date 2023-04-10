@@ -1,19 +1,18 @@
 import { useEffect } from 'react'
-import Head from './head'
-import NavBar from './navbar'
+import Head from '../components/head'
+import NavBar from '../components/navbar'
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
-		document.querySelector('body')?.classList.add('container')
 		document.querySelector('body')?.classList.add('mx-auto')
 		document.querySelector('body')?.classList.add('justify-center')
 	})
 	return (
 	<>
 		<Head />
-		<main className='container bg-white mx-auto h-full'>
+		<main className='w-screen h-screen bg-white'>
 			<NavBar></NavBar>
-			<div>{children}</div>
+			<div className='container px-6 mx-auto'>{children}</div>
 		</main>
 	</>
 	)

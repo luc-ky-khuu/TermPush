@@ -9,7 +9,7 @@ import { pageElementObject } from '@/interface/AddElementTestPage.interface';
  */
 
 export default function AddReactElement({ ...props }): JSX.Element {
-    const { element, selected, onSelect } = props
+    const { element, selected, onSelect, index } = props
     const ref = useRef(element.id);
 
 	let [pageElement, setPageElement] = useState<pageElementObject>(element);
@@ -27,7 +27,7 @@ export default function AddReactElement({ ...props }): JSX.Element {
              * Forms
              * Inputs
              */
-            classes.push('ml-3 w-full mt-3 mb-3 min-h-[50px]') // push nested elements to the right to help visualize nesting, can be removed.
+            classes.push('w-full mt-3 mb-3 min-h-[50px]') // push nested elements to the right to help visualize nesting, can be removed.
             if (idCounter[type] >= 0) {
                 idCounter[type] += 1;
             } else {
@@ -38,12 +38,20 @@ export default function AddReactElement({ ...props }): JSX.Element {
                 children: [],
                 classes: classes,
                 text: `${type}`,
-                id: `${element.id}${type}${idCounter[type]}`
+                id: `${element.id}${type}${idCounter[type]}`,
+                parentRef: ref
             };
     
             // add desired element to the children array of the selected component, then update state.
             pageElement.children.push(newChildElement);
             setIdCounter({...idCounter});
+            setPageElement({...pageElement});
+        },
+        removeElement: () => {
+            pageElement.parentRef.current.removeElementCall(index);
+        },
+        removeElementCall: (index) => {
+            pageElement.children.splice(index, 1);
             setPageElement({...pageElement});
         }
     }))
@@ -56,14 +64,14 @@ export default function AddReactElement({ ...props }): JSX.Element {
         //if there are any nested (children) elements, render recursively
         if (children.length > 0) {
             for (let i = 0; i < children.length; i++) {
-                reactChildren.push(<AddReactElement selected={selected} onSelect={onSelect} element={children[i]} key={children[i].id}/>);
+                reactChildren.push(<AddReactElement selected={selected} onSelect={onSelect} element={children[i]} key={children[i].id} index={i}/>);
             }
         };
         //add buttons for ability to keep adding, will be removed later in final product.		
         return createElement(
             type,
             { 
-                className: `${classes.join(',')} ${selected === element.id ? 'border-2 border-black' : ''}`,
+                className: `${classes.join(' ')} ${selected === element.id ? 'border-2 border-black selected-hover' : ''}`,
                 id: element.id,
                 ref: ref,
                 suppressContentEditableWarning: true,
@@ -71,7 +79,9 @@ export default function AddReactElement({ ...props }): JSX.Element {
                 onClick: (event) => {
                     event.preventDefault();
                     event.stopPropagation();
-                    onSelect(event.target.id, ref);
+                    const parentId = event.target.parentElement.id;
+                    onSelect(event.target.id, ref, parentId);
+                    
                 }
             },
              reactChildren);
